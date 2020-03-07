@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.sass']
 })
 export class AppComponent {
-  title = 'org-uzh-ase-frontend';
+  title = 'The Very Stressful Movie Quiz';
 }
