@@ -6,11 +6,13 @@ import { ExampleComponent } from "./example/example.component";
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ExampleService } from './example/example.service';
+import { PhaserComponent } from './phaser/phaser.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ExampleComponent
+    ExampleComponent,
+    PhaserComponent
   ],
   imports: [
     BrowserModule,
