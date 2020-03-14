@@ -1,0 +1,11 @@
+dist: trusty
+
+addons:
+  sonarcloud:
+    organization: "org-uzh-ase"
+    token:
+      secure: $SONAR_TOKEN # encrypted value of your token
+
+script:
+  # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
+  - sonar-scanner -Dsonar.login=$SONAR_LOGIN
