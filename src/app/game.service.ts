@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import {Quiz} from './model/quiz';
 
 @Injectable()
 export class GameService {
