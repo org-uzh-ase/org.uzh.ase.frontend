@@ -11,6 +11,7 @@ import { QuestionComponent } from './question/question.component';
 import { GameComponent } from './game/game.component';
 import { OptionComponent } from './option/option.component';
 import { GameService } from './game.service';
+import { PhaserComponent } from './phaser/phaser.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { GameService } from './game.service';
     AnswerComponent,
     QuestionComponent,
     GameComponent,
-    OptionComponent
+    OptionComponent,
+    PhaserComponent
   ],
   imports: [
     BrowserModule,

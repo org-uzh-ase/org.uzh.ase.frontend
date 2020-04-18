@@ -14,10 +14,15 @@
     "typeRoots": [
       "node_modules/@types"
     ],
+    "types": [
+      "Phaser"
+  ],
     "lib": [
       "es2018",
-      "dom"
-    ]
+      "dom",
+      "scripthost"
+    ],
+    "resolveJsonModule": true
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
