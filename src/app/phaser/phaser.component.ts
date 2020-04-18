@@ -87,7 +87,7 @@ class MainScene extends Phaser.Scene {
       var ballDestination = this.config.height / 2 + group.saveYPosition - group.children.entries[0].height / 2 - this.ball.height * this.ball.scaleY / 2;
       this.balance[this.ball.balance].weight += (4/3) * Math.PI * Math.pow((this.ball.width * this.ball.scaleX /2), 3);
       
-      var ballTween = this.tweens.add({
+      this.tweens.add({
         targets: this.ball,
         y: ballDestination,
         duration: 2000,
@@ -109,7 +109,7 @@ class MainScene extends Phaser.Scene {
       for(var i = 0; i < 2; i++){
           var difference = - this.balance[i].saveYPosition + weightDifference - (2 * i * weightDifference)
           this.balance[i].saveYPosition += difference;
-          var balanceTween = this.tweens.add({
+          this.tweens.add({
               targets: this.balance[i].children.entries,
               y: "+=" + difference.toString(),
               duration: 2000,
