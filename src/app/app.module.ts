@@ -10,6 +10,7 @@ import { AnswerComponent } from './answer/answer.component';
 import { QuestionComponent } from './question/question.component';
 import { GameComponent } from './game/game.component';
 import { OptionComponent } from './option/option.component';
+import { GameService } from './game.service';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,8 @@ import { OptionComponent } from './option/option.component';
     AppRoutingModule,
     HttpClientModule
   ],
+  providers: [GameService],
   bootstrap: [AppComponent]
+  
 })
 export class AppModule { }

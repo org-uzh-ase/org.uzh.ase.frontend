@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import {Movie} from '../model/movie';
 
 @Component({
   selector: 'app-answer',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./answer.component.sass']
 })
 export class AnswerComponent implements OnInit {
+
+  @Input() movies: Movie[];
 
   constructor() { }
 
