@@ -115,7 +115,7 @@ scorePrefix = 'SCORE: ';
   // Create some explosions!
   this.explosions = this.add.group({
       defaultKey: 'kaboom',
-      maxSize: 30
+      maxSize: 100
   });
 
   this.cursors = this.input.keyboard.addKeys({

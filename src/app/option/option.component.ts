@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import {Movie} from '../model/movie';
 
 @Component({
@@ -6,7 +6,7 @@ import {Movie} from '../model/movie';
   templateUrl: './option.component.html',
   styleUrls: ['./option.component.sass']
 })
-export class OptionComponent implements OnInit {
+export class OptionComponent implements OnInit, OnChanges {
 
   @Input() movie: Movie;
   @Input() correctAnswer: string;
@@ -15,6 +15,10 @@ export class OptionComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+  }
+
+  ngOnChanges(){
+    this.style = "wrapper";
   }
 
   validate(){
