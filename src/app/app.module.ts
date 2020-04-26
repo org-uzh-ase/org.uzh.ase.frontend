@@ -33,4 +33,5 @@ import { PhaserComponent } from './phaser/phaser.component';
   bootstrap: [AppComponent]
   
 })
-export class AppModule { }
+export class AppModule { 
+}

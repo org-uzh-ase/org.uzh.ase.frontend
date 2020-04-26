@@ -10,19 +10,8 @@ import {GameService} from '../game.service';
 })
 export class GameComponent implements OnInit {
 
-  quiz: Object;
-
-  constructor(private gameService: GameService) { }
+  constructor() { }
 
   ngOnInit() {
-    this.getQuiz();
   }
-
-  getQuiz(){
-    this.gameService.getQuiz().subscribe(
-      quiz => {
-        this.quiz = quiz;
-      })
-  }
-
 }

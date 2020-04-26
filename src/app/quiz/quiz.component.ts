@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import {Quiz} from '../model/quiz'
+import { GameService } from '../game.service';
+import {Quiz} from '../model/quiz';
 
 @Component({
   selector: 'app-quiz',
@@ -7,11 +8,20 @@ import {Quiz} from '../model/quiz'
   styleUrls: ['./quiz.component.sass']
 })
 export class QuizComponent implements OnInit {
-  @Input() quiz: Quiz;
+  quiz: Quiz;
 
-  constructor() { }
+  constructor(private gameService: GameService) { }
 
   ngOnInit() {
+    this.getQuiz();
+  }
+
+  getQuiz(){
+
+    this.gameService.getQuiz().subscribe(
+      quiz => {
+        this.quiz = <Quiz> quiz;
+      })
   }
 
 }
