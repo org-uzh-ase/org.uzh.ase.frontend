@@ -1,7 +1,7 @@
 export var CONFIG = {
     type: Phaser.AUTO,
-    height: 900,
-    width: 600,
+    height: 600,
+    width: 800,
     backgroundColor: '#222222',
     parent: 'phaser-game',
     physics: {
