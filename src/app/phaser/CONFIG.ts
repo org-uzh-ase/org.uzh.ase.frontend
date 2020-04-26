@@ -5,9 +5,6 @@ export var CONFIG = {
     backgroundColor: '#222222',
     parent: 'phaser-game',
     physics: {
-      default: 'arcade',
-      arcade: {
-        gravity: { y: 100 }
-      }
+      default: 'arcade'
     }
   };

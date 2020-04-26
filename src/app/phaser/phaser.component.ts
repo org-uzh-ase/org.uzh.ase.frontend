@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as Phaser from "phaser";
 import {CONFIG} from './CONFIG';
+import {Bullet} from './Bullet';
 
 
 @Component({
@@ -33,13 +34,20 @@ fireButton;
 explosions;
 starfield;
 score = 0;
-scoreString = '';
+scorePrefix = 'SCORE: ';
  scoreText;
  lives;
  enemyBullets;
  firingTimer = 0;
  stateText;
- livingEnemies = [];
+ livingAliens = [];
+ lastAlienBulletTime = 0;
+ lastPlayerBulletTime = 0;
+ playerLives;
+ isGameOver = false;
+ gameOverModal;
+ gameOverText;
+ config;
 
   preload(){
     this.load.image('bullet', '../assets/invaders/bullet.png');
@@ -52,70 +60,74 @@ scoreString = '';
   }
 
   create(){
-  //  The scrolling starfield background
-  this.starfield = this.add.tileSprite(400, 300, 800, 600, 'starfield');
-  
-  //  The baddies!
-  this.aliens = this.add.group();
-  this.aliens.enableBody = true;
-  this.aliens.physicsBodyType = Phaser.Physics.Arcade;
+    // Setup our aliens' "hover" animation.
+    this.anims.create({
+      key: 'hover',
+      frames: this.anims.generateFrameNumbers( 'invader', {
+          start: 0,
+          end: 9
+      }),
+      frameRate: 10,
+      repeat: -1
+  });
 
+  // Setup our explosion animation.
+  this.anims.create({
+      key: 'explode',
+      frames: this.anims.generateFrameNumbers( 'kaboom', {
+          start: 0,
+          end: 15
+      }),
+      frameRate: 16,
+      repeat: 0,
+      hideOnComplete: true
+  });
+
+  // Set starfield's value to be a tile sprite, and make sure it's scaled properly.
+  this.starfield = this.add.tileSprite( 0, 0, 2048, 2048, 'starfield' );
+  this.starfield.setScale( 1 );
+
+  // Setup the score text.
+  this.scoreText = this.add.text( 10, 15, this.scorePrefix + this.score );
+
+  // Setup the player's lives.
+  this.playerLives = this.add.group();
+  this.add.text(
+      this.sys.canvas.width - 185,    // From the right.
+      15,                             // From the top.
+      'LIVES:'
+  );
+  this.createPlayerLives( this );
+
+  // Add the player as a sprite to the game physics!
+  this.player = this.physics.add.sprite( 400, 500, 'ship' );
+  this.player.setOrigin( 0.5, 0 );
+  this.player.setCollideWorldBounds( true );
+
+  // Create a group to hold our invaders.
+  this.aliens = this.physics.add.group();
   this.createAliens();
 
-  //  Our bullet group
-  this.bullets = this.add.group();
-  this.bullets.enableBody = true;
-  this.bullets.physicsBodyType = Phaser.Physics.Arcade;
-  this.bullets.createMultiple(30, 'bullet');
-  this.bullets.forEach('anchor.x', 0.5);
-  this.bullets.forEach('anchor.y', 1);
-  this.bullets.forEach('outOfBoundsKill', true);
-  this.bullets.forEach('checkWorldBounds', true);
+  // Create the player and alien bullet collections.
+  this.bullets = this.createBullets( 'bullet', this );
+  this.enemyBullets = this.createBullets( 'enemyBullet', this );
 
-  // The enemy's bullets
-  this.enemyBullets = this.add.group();
-  this.enemyBullets.enableBody = true;
-  this.enemyBullets.physicsBodyType = Phaser.Physics.Arcade;
-  this.enemyBullets.createMultiple(30, 'enemyBullet');
-  this.enemyBullets.setAll('anchor.x', 0.5);
-  this.enemyBullets.setAll('anchor.y', 1);
-  this.enemyBullets.setAll('outOfBoundsKill', true);
-  this.enemyBullets.setAll('checkWorldBounds', true);
+  // Create some explosions!
+  this.explosions = this.add.group({
+      defaultKey: 'kaboom',
+      maxSize: 30
+  });
 
-  //  The hero!
-  this.player = this.add.sprite(400, 500, 'ship');
-  this.player.anchor.setTo(0.5, 0.5);
- // this.physics.enable(this.player, Phaser.Physics.Arcade);
+  this.cursors = this.input.keyboard.addKeys({
+    left:Phaser.Input.Keyboard.KeyCodes.A,
+    right:Phaser.Input.Keyboard.KeyCodes.D
+  });
 
-  //  The score
-  this.scoreString = 'Score : ';
-  this.scoreText = this.add.text(10, 10, this.scoreString + this.score, { font: '34px Arial', fill: '#fff' });
+  // Wire up the player's firing mechanism.
+  this.firePlayerBullet( this );
 
-  //  Lives
-  this.lives = this.add.group();
-  this.add.text(CONFIG.width - 100, 10, 'Lives : ', { font: '34px Arial', fill: '#fff' });
-
-  //  Text
-  this.stateText = this.add.text(10, 10,' ', { font: '84px Arial', fill: '#fff' });
-  this.stateText.anchor.setTo(0.5, 0.5);
-  this.stateText.visible = false;
-
-  for (var i = 0; i < 3; i++) 
-  {
-      var ship = this.lives.create(CONFIG.width - 100 + (30 * i), 60, 'ship');
-      ship.anchor.setTo(0.5, 0.5);
-      ship.angle = 90;
-      ship.alpha = 0.4;
-  }
-
-  //  An explosion pool
-  this.explosions = this.add.group();
-  this.explosions.createMultiple(30, 'kaboom');
-  this.explosions.forEach(this.setupInvader, this);
-
-  //  And some controls to play the game with
-  this.cursors = this.input.keyboard.createCursorKeys();
-  this.fireButton = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+  // Setup the game over screen.
+  this.createGameOverModal( this );
   
 }
 
@@ -125,333 +137,291 @@ createAliens () {
   {
       for (var x = 0; x < 10; x++)
       {
-          var alien = this.aliens.create(x * 48, y * 50, 'invader');
-          alien.setScale(1.25);
-          //alien.anims.create('fly', [ 0, 1, 2, 3 ], 20, true);
-          //alien.play('fly');
-          //alien.body.moves = false;
+          var alien = this.aliens.create( x * 50, y * 45, 'invader' );
+          alien.setOrigin( 0.5, 0.5 );
+          alien.lastFired = 0;
+          alien.play( 'hover' );
       }
   }
+      // Center our collection of aliens.
+      Phaser.Actions.IncX( this.aliens.getChildren(), 60 );
 
-  this.aliens.x = 100;
-  this.aliens.y = 50;
-
-  //  All this does is basically start the invaders moving. Notice we're moving the Group they belong to, rather than the invaders directly.
-  var tween = this.add.tween({
-   targets: this.aliens,
-   x: 200,
-   duration: 2000,
-   autoStart: true,
-   delay: 0,
-   repat: 1000,
-   yoyo: true
-  });
-
-  //  When the tween loops it calls descend
-  tween.on('loop', this.descend);
+      // Bring them further into the scene vertically.
+      Phaser.Actions.IncY( this.aliens.getChildren(), 75 );
 }
 
-setupInvader (invader) {
-
-  invader.anchor.x = 0.5;
-  invader.anchor.y = 0.5;
-  invader.animations.add('kaboom');
-
+createBullets(imageName, sceneRef) {
+  return sceneRef.physics.add.group({
+    classType: Bullet,
+    defaultKey: imageName,
+    runChildUpdate: true
+});
 }
 
-descend() {
+firePlayerBullet(sceneRef){
+  sceneRef.input.keyboard.on( 'keydown_SPACE', () => {
 
-  this.aliens.y += 10;
+    // If the player died, no processing!
+    if ( this.player.active === false ) {
+        return;
+    }
 
+    // Grab the first bullet in the group, activate it, and make it visible.
+    var playerBullet = this.bullets.get().setActive( true ).setVisible( true );
+
+    // As long as we have a valid bullet, fire it.
+    if ( playerBullet && sceneRef.time.now - this.lastPlayerBulletTime > 1000 ) {
+
+        // We don't need a target, since we don't need to calculate angles.
+        playerBullet.fire( this.player ); 
+
+        // Setup collision handling.
+        sceneRef.physics.add.collider( this.aliens, playerBullet, this.handleEnemyCollision, null, this );
+
+        // Update the player last fired time.
+        this.lastPlayerBulletTime = sceneRef.time.now;
+    }
+}, sceneRef );
 }
 
-update() {
+fireEnemyBullet( player, time, sceneRef ) {
 
-  //  Scroll the background
-  this.starfield.tilePosition.y += 2;
+  // Grab the first bullet in the group, activate it, and make it visible.
+  var enemyBullet = this.enemyBullets.get().setActive( true ).setVisible( true );
 
-  if (this.player.alive)
-  {
-      //  Reset the player, then check for movement keys
-      this.player.body.velocity.setTo(0, 0);
+  // Find out how many alien invaders are still "alive," and track them.
+  this.livingAliens = this.aliens.getChildren().filter( alien => alien.active === true );
 
-      if (this.cursors.left.isDown)
+  // If we have an instance of enemyBullet, AND there are aliens still alive.
+  if ( enemyBullet && this.livingAliens.length > 0 ) {
+
+      // Get a random number between 0 and the number of aliens alive.
+      var randomAlienNumber = Phaser.Math.RND.integerInRange(
+          0,
+          this.livingAliens.length - 1
+      );
+
+      // Get the alien from the collection with that number.
+      var randomAlien = this.livingAliens[ randomAlienNumber ];
+
+      // If this alien hasn't fired in the last 4,000 milliseconds...
+      if ( time - randomAlien.lastFired > 4000 ) {
+
+          // Set the lastFired, so the alien doesn't fire again for a while.
+          randomAlien.lastFired = time;
+
+          // FIRE ZE BULLET!
+          enemyBullet.fire( randomAlien, player );
+
+          // Setup collision handling.
+          sceneRef.physics.add.collider( player, enemyBullet, this.handlePlayerCollision, null, this );
+
+          // Update the global last fired time, and add 2,000 milliseconds.
+          this.lastAlienBulletTime = time + 2000;
+      }
+  }
+}
+
+createGameOverModal(sceneRef){
+  // Create a "modal" window.
+  this.gameOverModal = sceneRef.add.graphics();
+
+  // Set its background color.
+  this.gameOverModal.fillStyle( 0x303030, 0.8 );
+
+  // Set its shape, x- and y-coordinates, and size.
+  this.gameOverModal.fillRect(
+      0,
+      0,
+      sceneRef.sys.canvas.width,
+      sceneRef.sys.canvas.height
+  );
+
+  // It shouldn't be visible... yet.
+  this.gameOverModal.visible = false;
+
+  // Get our game over text ready.
+  this.gameOverText = sceneRef.add.text(
+      sceneRef.sys.canvas.width / 2,
+      sceneRef.sys.canvas.height / 2,
+      ' ',
       {
-        this.player.body.velocity.x = -200;
+          align: 'center'
       }
-      else if (this.cursors.right.isDown)
-      {
-        this.player.body.velocity.x = 200;
+  );
+  this.gameOverText.setOrigin( 0.5, 0.5 );
+
+  // It shouldn't be visible... yet.
+  this.gameOverText.visible = false;
+
+  // Handle the player wanting to start over on mouse click.
+  sceneRef.input.on( 'pointerdown', ( pointer ) => {
+
+      // Only on a Game Over condition.
+      if ( this.isGameOver ) {
+
+          // Reset everything.
+          this.bullets.clear( true, true );
+          this.enemyBullets.clear( true, true );
+          this.explosions.clear( true, true );
+          this.aliens.clear( true, true );
+          this.playerLives.clear( true, true );
+
+          // Create again.
+          this.createAliens();
+          this.createPlayerLives( sceneRef );
+          this.player.setActive( true ).setVisible( true );
+
+          // Hide the text, followed by the modal.
+          this.gameOverText.visible = false;
+          this.gameOverModal.visible = false;            
+
+          // Reset the game over state.
+          this.isGameOver = false;
       }
-
-      //  Firing?
-      if (this.fireButton.isDown)
-      {
-        this.fireBullet();
-      }
-
-      if (this.time.now > this.firingTimer)
-      {
-        this.enemyFires();
-      }
-
-      //  Run collision
-      this.physics.overlap(this.bullets, this.aliens, this.collisionHandler, null, this);
-      this.physics.overlap(this.enemyBullets, this.player, this.enemyHitsPlayer, null, this);
-  }
-
+  }, sceneRef );
 }
 
-render() {
+handleEnemyCollision(bullet, alien){
+  if ( bullet.active === true && alien.active === true ) {
 
-  // for (var i = 0; i < aliens.length; i++)
-  // {
-  //     game.debug.body(aliens.children[i]);
-  // }
+      // Deactivate the bullet, and take it off the screen.
+      bullet.setActive( false ).setVisible( false );
 
+      // Get the first explosion, and activate it.
+      var explosion = this.explosions.get().setActive( true );
+
+      // Place the explosion on the screen, and play the animation.
+      explosion.setOrigin( 0.5, 0.5 );
+      explosion.x = alien.x;
+      explosion.y = alien.y;
+      explosion.play( 'explode' );
+
+    // Deactivate and remove the alien from the screen.
+    alien.setActive( false ).setVisible( false );
+
+    // Increment the score.
+    this.score += 20;
+    this.scoreText.setText( this.scorePrefix + this.score );
+
+    // Game Over condition: has the player killed all the alien invaders?
+    if ( this.aliens.countActive() === 0 ) {
+
+        // Award a bonus for winning.
+        this.score += 1000;
+        this.scoreText.setText( this.scorePrefix + this.score );
+
+        // Handle Game Over.
+        this.handleGameOver( true );
+    }
+  }
 }
 
-collisionHandler (bullet, alien) {
+handlePlayerCollision( player, bullet ) {
 
-  //  When a bullet hits an alien we kill them both
-  bullet.kill();
-  alien.kill();
+  // If both the player and bullet are active...
+  if ( player.active === true && bullet.active === true ) {
 
-  //  Increase the score
-  this.score += 20;
-  this.scoreText.text = this.scoreString + this.score;
+      // Deactivate the bullet, and take it off the screen.
+      bullet.setActive( false ).setVisible( false );
 
-  //  And create an explosion :)
-  var explosion = this.explosions.getFirstExists(false);
-  explosion.reset(alien.body.x, alien.body.y);
-  explosion.play('kaboom', 30, false, true);
+      // Get the first explosion, and activate it.
+      var explosion = this.explosions.get().setActive( true );
 
-  if (this.aliens.countLiving() == 0)
-  {
-    this.score += 1000;
-    this.scoreText.text = this.scoreString + this.score;
+      // Place the explosion on the screen, and play the animation.
+      explosion.setOrigin( 0.5, 0.5 );
+      explosion.x = player.x;
+      explosion.y = player.y;
+      explosion.play( 'explode' );
 
-    this.enemyBullets.callAll('kill',this);
-    this.stateText.text = " You Won, \n Click to restart";
-    this.stateText.visible = true;
+      // Remove a life.
+      var life = this.playerLives.getFirstAlive();
+      if ( life ) {
+          life.setActive( false ).setVisible( false );
+      }
 
-      //the "click to restart" handler
-      this.input.on('pointerdown', this.restart);
+      // Game Over condition: has the player lost all their lives?
+      if ( this.playerLives.countActive() < 1 ) {
+        this.handleGameOver( false );
+      }
   }
-
 }
 
-enemyHitsPlayer (player,bullet) {
-  
-  bullet.kill();
+createPlayerLives(sceneRef){
+  // Our x-coordinate for the lives images.
+  var x = sceneRef.sys.canvas.width - 105;
 
-  var live = this.lives.getFirstAlive();
+  // Only 3.
+  for ( var i = 0; i < 3; i++ ) {
+      // Calculate this life's x-coordinate.
+      var lifeX = x + 40 * i;
 
-  if (live)
-  {
-    live.kill();
+      // Add a life to our collection of lives.
+      var life = this.playerLives.create( lifeX, 25, 'ship' );
+
+      // Set the life's origin, scale, and opacity.
+      life.setOrigin( 0.5, 0.5 );
+      life.setScale( 0.5 );
+      life.alpha = 0.4;
   }
-
-  //  And create an explosion :)
-  var explosion = this.explosions.getFirstExists(false);
-  explosion.reset(player.body.x, player.body.y);
-  explosion.play('kaboom', 30, false, true);
-
-  // When the player dies
-  if (this.lives.countLiving() < 1)
-  {
-      player.kill();
-      this.enemyBullets.callAll('kill');
-
-      this.stateText.text=" GAME OVER \n Click to restart";
-      this.stateText.visible = true;
-
-      //the "click to restart" handler
-      this.input.on('pointerdown', this.restart);
-  }
-
 }
 
-enemyFires () {
+handleGameOver( didPlayerWin ) {
 
-  //  Grab the first bullet we can from the pool
-  var enemyBullet = this.enemyBullets.getFirstExists(false);
+  // Set the condition flag, so the aliens stop firing if any are left.
+  this.isGameOver = true;
 
-  this.livingEnemies.length=0;
+  // Remove and disable a group item.
+  var removeDisableItem = function( item ) {
+      item.setActive( false ).setVisible( false );
+  };
 
-  this.aliens.forEachAlive( (alien) => {
+  // Disable all bullets, so no one can fire.
+  Phaser.Utils.Array.Each( this.bullets.getChildren(), removeDisableItem , this.game.context);
+  Phaser.Utils.Array.Each( this.enemyBullets.getChildren(), removeDisableItem, this.game.context );
+  Phaser.Utils.Array.Each( this.aliens.getChildren(), removeDisableItem, this.game.context );
 
-      // put every living enemy in an array
-      this.livingEnemies.push(alien);
-  });
+  // Disable the player.
+  this.player.setActive( false ).setVisible( false );
 
+  // The text to display, based on whether the player won.
+  var displayText = ( didPlayerWin )
+      ? ' YOU WON! \n\n Click to restart.'
+      : ' GAME OVER \n\n Click to restart.';
 
-  if (enemyBullet && this.livingEnemies.length > 0)
-  {
+  // Set the text.
+  this.gameOverText.setText( displayText );
+
+  // Show the modal, followed by the text.
+  this.gameOverModal.visible = true;
+  this.gameOverText.visible = true;
+}
+
+update(time) {
+
       
-      var random=random.integerInRange(0,this.livingEnemies.length-1);
+    // Scroll our starfield background.
+    this.starfield.tilePositionY += this.isGameOver ? 0.5 : 2;
 
-      // randomly select one of them
-      var shooter=this.livingEnemies[random];
-      // And fire the bullet from this enemy
-      enemyBullet.reset(shooter.body.x, shooter.body.y);
+    // Is the player pressing the left arrow?
+    if ( this.cursors.left.isDown ) {
+      this.player.setVelocityX( -200 );
+    }
 
-      this.physics.moveToObject(enemyBullet,this.player,120);
-      this.firingTimer = this.time.now + 2000;
-  }
+    // Is the player pressing the right arrow?
+    else if ( this.cursors.right.isDown ) {
+      this.player.setVelocityX( 200 );
+    }
 
-}
-
-fireBullet () {
-
-  //  To avoid them being allowed to fire too fast we set a time limit
-  if (this.time.now > this.bulletTime)
-  {
-      //  Grab the first bullet we can from the pool
-      var bullet = this.bullets.getFirstExists(false);
-
-      if (bullet)
-      {
-          //  And fire it
-          bullet.reset(this.player.x, this.player.y + 8);
-          bullet.body.velocity.y = -400;
-          this.bulletTime = this.time.now + 200;
-      }
-  }
-
-}
-
-resetBullet (bullet) {
-
-  //  Called if the bullet goes out of the screen
-  bullet.kill();
-
-}
-
-restart () {
-
-  //  A new level starts
-  
-  //resets the life count
-  this.lives.callAll('revive');
-  //  And brings the aliens back from the dead :)
-  this.aliens.removeAll();
-  this.createAliens();
-
-  //revives the player
-  this.player.revive();
-  //hides the text
-  this.stateText.visible = false;
-
-}
-
-}
-
-class MainScene extends Phaser.Scene {
-  growBall: boolean; 
-  canPlay: boolean;
-  balance;
-  ball;
-  gameOptions;
-  config;
-
-  constructor() {
-    super({ key: 'main' });
-    this.config = CONFIG;
-   
-        this.gameOptions = {
-            maxDiameter: 1,
-            ballGrowingSpeed: 0.015,
-            balanceFriction: 400
-        };
-
-        this.growBall = false;
-        this.canPlay = true;
-        this.ball = null;
-        this.balance = [];
-  }
-
-  preload() {
-
-    this.load.image("balance", "../assets/balance.png");
-    this.load.image("ball", "../assets/ball.png");
-  }
-
-  create() {
+    // Otherwise, we need to slow them down.
+    else {
+      this.player.setVelocityX( 0 );
+    }
     
-    for(var i = 0; i < 2; i++){
-      this.balance[i] = this.add.group();
-      this.balance[i].weight = 0;
-      this.balance[i].saveYPosition = 0;
-      var balanceSprite = this.add.sprite(this.config.width / 2 *i, 240, "balance");
-      balanceSprite.setOrigin(0, 0.5);
-      this.balance[i].add(balanceSprite)
+    // If the invaders haven't fired recently - and the game isn't over - fire one.
+    if ( time > this.lastAlienBulletTime && !this.isGameOver ) {
+      this.fireEnemyBullet( this.player, time, this );
     }
-    this.input.on("pointerdown", this.placeBall, this);
-    this.input.on("pointerup", this.dropBall, this);
-  }
+}
 
-  placeBall(pointer) {
-    if(!this.growBall && this.canPlay){
-      var side = Math.floor(pointer.x / (this.config.width / 2));
-      this.ball = this.add.sprite(pointer.x, 30, "ball");
-      this.ball.setScale(0.1);
-      this.ball.balance = side;
-      this.growBall = true;
-    }
-  }
-
-  dropBall() {
-    if(this.growBall){
-      this.growBall = false;
-      this.canPlay = false;
-
-      var group = this.balance[this.ball.balance];
-
-      var ballDestination = this.config.height / 2 + group.saveYPosition - group.children.entries[0].height / 2 - this.ball.height * this.ball.scaleY / 2;
-      this.balance[this.ball.balance].weight += (4/3) * Math.PI * Math.pow((this.ball.width * this.ball.scaleX /2), 3);
-      
-      this.tweens.add({
-        targets: this.ball,
-        y: ballDestination,
-        duration: 2000,
-        ease: "Bounce",
-        onComplete: adjustBalances,
-        onCompleteScope: this
-      })
-    }
-
-    function adjustBalances() {
-      var weightDifference = (this.balance[0].weight - this.balance[1].weight) / 400;
-      var maxDifference = this.config.height / 3;
-      if(weightDifference > maxDifference){
-          weightDifference = maxDifference;
-      }
-      if(weightDifference < -maxDifference){
-          weightDifference = -maxDifference;
-      }
-      for(var i = 0; i < 2; i++){
-          var difference = - this.balance[i].saveYPosition + weightDifference - (2 * i * weightDifference)
-          this.balance[i].saveYPosition += difference;
-          this.tweens.add({
-              targets: this.balance[i].children.entries,
-              y: "+=" + difference.toString(),
-              duration: 2000,
-              ease: "Quad",
-              onComplete: function(){
-                  this.canPlay = true;
-              },
-              onCompleteScope: this
-          })
-      }
-    }
-  }
-
-
-  update() {
-    if (this.growBall && this.ball.scaleX < this.gameOptions.maxDiameter)
-    {
-        this.ball.setScale(this.ball.scaleX + this.gameOptions.ballGrowingSpeed);
-    }
-  }
 }
