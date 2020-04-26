@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {Movie} from '../model/movie';
-import {GameService} from '../game.service';
 
 @Component({
   selector: 'app-option',
@@ -10,7 +9,7 @@ import {GameService} from '../game.service';
 export class OptionComponent implements OnInit {
 
   @Input() movie: Movie;
-  @Input() correctAnswer: String;
+  @Input() correctAnswer: string;
   style = "wrapper"
   
   constructor() { }

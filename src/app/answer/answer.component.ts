@@ -9,7 +9,7 @@ import {Movie} from '../model/movie';
 export class AnswerComponent implements OnInit, OnChanges {
 
   @Input() movies: Movie[];
-  @Input() correctAnswer: String;
+  @Input() correctAnswer: string;
 
   constructor() { }
 
