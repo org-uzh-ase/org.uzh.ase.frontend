@@ -32,7 +32,7 @@ export class AnswerComponent implements OnInit, OnChanges {
     while (0 !== currentIndex) {
   
       // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * currentIndex);
+      randomIndex = Math.floor(Math.random() * currentIndex); // nosonar
       currentIndex -= 1;
   
       // And swap it with the current element.
