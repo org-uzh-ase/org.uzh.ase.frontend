@@ -1,6 +1,6 @@
-<div>
-    <div class="answer">
-        <app-answer [movies]="quiz.answers"></app-answer>
+<div class="wrapper">
+    <div class="answer" (click)="getQuiz()">
+        <app-answer [movies]="quiz.answers" [correctAnswer]="quiz.correctAnswer"></app-answer>
     </div>
     <div class="question">
         <app-question [description]="quiz.description"></app-question>
