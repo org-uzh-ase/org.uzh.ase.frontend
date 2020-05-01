@@ -46,7 +46,6 @@ export class AnswerComponent implements OnInit, OnChanges {
   }
 
   getEventFromOption(valueEmitted: boolean){
-    console.log("Answer component: " + valueEmitted)
     this.clicked.emit(valueEmitted);
   }
 

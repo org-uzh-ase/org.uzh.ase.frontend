@@ -26,7 +26,6 @@ export class QuizComponent implements OnInit {
   }
 
   getEventFromOption(valueEmitted: boolean){
-    console.log("Quiz component: " + valueEmitted)
     this.clicked.emit(valueEmitted);
   }
 
