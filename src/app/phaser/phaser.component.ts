@@ -21,12 +21,14 @@ export class PhaserComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    console.log("init phaser component")
     this.phaserGame = new Phaser.Game(this.config);
     window["angularLink"] = this;
   }
 
   setGameOver(score: integer){
     this.gameOver.emit(score);
+    this.phaserGame.destroy(true, false);
   }
 
 }

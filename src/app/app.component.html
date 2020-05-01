@@ -10,7 +10,7 @@
     <h1>The Very Stressful Movie Quiz</h1>
   </div>
 
-  <div class="starting" *ngIf="!startedGame">
+  <div class="starting" *ngIf="welcome">
     <h1>Welcome to the very stressful Movie Quiz!</h1>
 
     <button (click)="startGame()">Start the game!</button>
@@ -21,6 +21,8 @@
   </div>
   <div class="gameover" *ngIf="gameover">
     <h1>You lost you fucking looser :D Your total score is {{totalScore}}</h1>
+    <button (click)="restartGame()">Try again and restart the Game</button>
+    <button (click)="backToStart()">Home</button>
   </div>
 <router-outlet></router-outlet>
 </body>
