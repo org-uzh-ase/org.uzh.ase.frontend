@@ -8,8 +8,14 @@ import { Component } from '@angular/core';
 export class AppComponent{
   title = 'The Very Stressful Movie Quiz';
   startedGame = false;
+  gameover = false;
 
   startGame(){
     this.startedGame = true
+  }
+
+  setGameOver(valueEmitted: boolean){
+    this.gameover = valueEmitted;
+    this.startedGame = false;
   }
 }

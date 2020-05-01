@@ -17,7 +17,10 @@
   </div>
 
   <div class="game" *ngIf="startedGame">
-    <app-game></app-game>
+    <app-game (gameover) = "setGameOver($event)"></app-game>
+  </div>
+  <div class="gameover" *ngIf="gameover">
+    <h1>You lost you fucking looser :D</h1>
   </div>
 <router-outlet></router-outlet>
 </body>

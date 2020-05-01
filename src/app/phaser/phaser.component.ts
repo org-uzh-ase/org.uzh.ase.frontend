@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import * as Phaser from "phaser";
 import {CONFIG} from './CONFIG';
 import {Bullet} from './Bullet';
@@ -13,6 +13,7 @@ import {Bullet} from './Bullet';
 export class PhaserComponent implements OnInit {
   phaserGame: Phaser.Game;
   config: Phaser.Types.Core.GameConfig;
+  @Output() gameOver: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor() {
     this.config = CONFIG;
@@ -21,33 +22,39 @@ export class PhaserComponent implements OnInit {
 
   ngOnInit(): void {
     this.phaserGame = new Phaser.Game(this.config);
+    window["angularLink"] = this;
   }
+
+  setGameOver(){
+    this.gameOver.emit(true);
+  }
+
 }
 
 class SpaceScene extends Phaser.Scene{
   player;
   aliens;
-bullets;
-bulletTime = 0;
-cursors;
-fireButton;
-explosions;
-starfield;
-score = 0;
-scorePrefix = 'SCORE: ';
- scoreText;
- lives;
- enemyBullets;
- firingTimer = 0;
- stateText;
- livingAliens = [];
- lastAlienBulletTime = 0;
- lastPlayerBulletTime = 0;
- playerLives;
- isGameOver = false;
- gameOverModal;
- gameOverText;
- config;
+  bullets;
+  bulletTime = 0;
+  cursors;
+  fireButton;
+  explosions;
+  starfield;
+  score = 0;
+  scorePrefix = 'SCORE: ';
+  scoreText;
+  lives;
+  enemyBullets;
+  firingTimer = 0;
+  stateText;
+  livingAliens = [];
+  lastAlienBulletTime = 0;
+  lastPlayerBulletTime = 0;
+  playerLives;
+  isGameOver = false;
+  gameOverModal;
+  gameOverText;
+  config;
 
   preload(){
     this.load.image('bullet', '../assets/invaders/bullet.png');
@@ -334,16 +341,20 @@ handlePlayerCollision( player, bullet ) {
       explosion.y = player.y;
       explosion.play( 'explode' );
 
-      // Remove a life.
-      var life = this.playerLives.getFirstAlive();
-      if ( life ) {
-          life.setActive( false ).setVisible( false );
-      }
+      this.removeLife();
 
       // Game Over condition: has the player lost all their lives?
       if ( this.playerLives.countActive() < 1 ) {
         this.handleGameOver( false );
       }
+  }
+}
+
+removeLife(){
+  // Remove a life.
+  var life = this.playerLives.getFirstAlive();
+  if ( life ) {
+      life.setActive( false ).setVisible( false );
   }
 }
 
@@ -395,6 +406,14 @@ handleGameOver( didPlayerWin ) {
   // Show the modal, followed by the text.
   this.gameOverModal.visible = true;
   this.gameOverText.visible = true;
+
+  this.setGameOver();
+}
+
+setGameOver(){
+  var comp: PhaserComponent;
+  comp = window['angularLink'] as PhaserComponent;
+  comp.setGameOver();
 }
 
 update(time) {
