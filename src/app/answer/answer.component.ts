@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import {Movie} from '../model/movie';
 
 @Component({
@@ -10,6 +10,7 @@ export class AnswerComponent implements OnInit, OnChanges {
 
   @Input() movies: Movie[];
   @Input() correctAnswer: string;
+  @Output() clicked: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor() { }
 
@@ -42,6 +43,11 @@ export class AnswerComponent implements OnInit, OnChanges {
     }
   
     return array;
+  }
+
+  getEventFromOption(valueEmitted: boolean){
+    console.log("Answer component: " + valueEmitted)
+    this.clicked.emit(valueEmitted);
   }
 
 }

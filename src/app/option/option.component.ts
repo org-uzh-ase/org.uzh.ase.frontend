@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import {Movie} from '../model/movie';
 
 @Component({
@@ -10,7 +10,8 @@ export class OptionComponent implements OnInit, OnChanges {
 
   @Input() movie: Movie;
   @Input() correctAnswer: string;
-  style = "wrapper"
+  @Output() clicked: EventEmitter<boolean> = new EventEmitter<boolean>();
+  style = "wrapper";
   
   constructor() { }
 
@@ -23,9 +24,13 @@ export class OptionComponent implements OnInit, OnChanges {
 
   validate(){
     if(this.correctAnswer == this.movie.code){
+      console.log("Option component: true")
       this.style = "wrapper correct";
+      this.clicked.emit(true);
     }else{
+      console.log("Option component: false")
       this.style = "wrapper wrong";
+      this.clicked.emit(false);
     }    
   }
 

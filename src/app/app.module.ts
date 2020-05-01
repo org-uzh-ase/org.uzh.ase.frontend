@@ -12,6 +12,8 @@ import { GameComponent } from './game/game.component';
 import { OptionComponent } from './option/option.component';
 import { GameService } from './game.service';
 import { PhaserComponent } from './phaser/phaser.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,9 @@ import { PhaserComponent } from './phaser/phaser.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatProgressBarModule
   ],
   providers: [GameService],
   bootstrap: [AppComponent]
