@@ -7,11 +7,36 @@
 </head>
 <body>
   <div class="title">
+    <img src="../assets/Popcorn_laura.gif" alt="popcorn">
     <h1>The Very Stressful Movie Quiz</h1>
+    <img src="../assets/Popcorn_laura.gif" alt="popcorn">
   </div>
 
   <div class="starting" *ngIf="welcome">
-    <h1>Welcome to the very stressful Movie Quiz!</h1>
+    <h1>Welcome to the Very Stressful Movie Quiz!</h1>
+
+    <div class="instructions">
+      <div>
+        <img src='../assets/quiz.JPG' alt="Quiz">
+      </div>
+      <div class="text">
+        Read the description on the bottom and match it to the correct movie title. <br>
+        Each correctly guessed Movie grants you +10 Points. Guess wrong and 5 points are reducted.<br>
+        Your Total Score for the Quiz part is shown on the upper left corner.<br>
+      </div>
+    </div>
+
+    <div class="instructions"> 
+      <div>
+        <img src='../assets/shooting_game.JPG' alt="Space Game">
+      </div>
+      <div class="text">
+        Steer your Space Ship to the left using 'A' on your keyboard and go to the right using 'D'. Shoot bullets with the spacebar.<br>
+        You start with a total of 3 lives. For each hit you take from the enemy bullets, one live will be taken away. If you have no more lives the game is over.<br>
+        For each enemy you shoot you'll receive +20 points and an additional 1000 points if all enemies were killed.<br>
+        Your Total Score for the Space Game part is shown on the upper left corner and your current number of lives on the upper right corner.<br>
+      </div>
+    </div>
 
     <button (click)="startGame()">Start the game!</button>
   </div>
@@ -20,9 +45,12 @@
     <app-game (gameover) = "setGameOver($event)"></app-game>
   </div>
   <div class="gameover" *ngIf="gameover">
-    <h1>You lost you fucking looser :D Your total score is {{totalScore}}</h1>
-    <button (click)="restartGame()">Try again and restart the Game</button>
-    <button (click)="backToStart()">Home</button>
+    <h1>Your Total Score is {{totalScore}}</h1>
+    
+    <div class="buttons">
+      <button (click)="restartGame()">Try again</button>
+      <button (click)="backToStart()">Back to Instructions</button>  
+    </div>
   </div>
 <router-outlet></router-outlet>
 </body>

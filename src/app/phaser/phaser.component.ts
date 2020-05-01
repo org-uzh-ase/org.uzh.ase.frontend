@@ -21,7 +21,6 @@ export class PhaserComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    console.log("init phaser component")
     this.phaserGame = new Phaser.Game(this.config);
     window["angularLink"] = this;
   }
@@ -97,14 +96,15 @@ class SpaceScene extends Phaser.Scene{
   this.starfield.setScale( 1 );
 
   // Setup the score text.
-  this.scoreText = this.add.text( 10, 15, this.scorePrefix + this.score );
+  this.scoreText = this.add.text( 10, 15, this.scorePrefix + this.score, {'fontSize': '25px'} );
 
   // Setup the player's lives.
   this.playerLives = this.add.group();
   this.add.text(
-      this.sys.canvas.width - 185,    // From the right.
+      this.sys.canvas.width - 210,    // From the right.
       15,                             // From the top.
-      'LIVES:'
+      'LIVES:',
+      {'fontSize': '25px'}
   );
   this.createPlayerLives( this );
 
@@ -144,9 +144,9 @@ createAliens () {
 
   for (var y = 0; y < 4; y++)
   {
-      for (var x = 0; x < 10; x++)
+      for (var x = 0; x < 15; x++)
       {
-          var alien = this.aliens.create( x * 50, y * 45, 'invader' );
+          var alien = this.aliens.create( x * 48, y * 45, 'invader' );
           alien.setOrigin( 0.5, 0.5 );
           alien.lastFired = 0;
           alien.play( 'hover' );
@@ -374,8 +374,8 @@ createPlayerLives(sceneRef){
 
       // Set the life's origin, scale, and opacity.
       life.setOrigin( 0.5, 0.5 );
-      life.setScale( 0.5 );
-      life.alpha = 0.4;
+      life.setScale( 0.75 );
+      life.alpha = 0.6;
   }
 }
 
