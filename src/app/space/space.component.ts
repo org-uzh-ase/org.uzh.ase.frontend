@@ -7,14 +7,14 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class SpaceComponent implements OnInit {
 
-  @Output() gameOver: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() gameOver: EventEmitter<integer> = new EventEmitter<integer>();
   
   constructor() { }
 
   ngOnInit() {
   }
 
-  setGameOver(valueEmitted: boolean){
+  setGameOver(valueEmitted: integer){
     this.gameOver.emit(valueEmitted);
   }
 }

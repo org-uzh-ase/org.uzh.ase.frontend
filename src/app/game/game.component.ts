@@ -7,7 +7,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class GameComponent implements OnInit {
   score: integer;
-  @Output() gameover: EventEmitter<boolean> = new EventEmitter<boolean>(); 
+  @Output() gameover: EventEmitter<integer> = new EventEmitter<integer>(); 
 
   constructor() { }
 
@@ -23,7 +23,7 @@ export class GameComponent implements OnInit {
     }
   }
 
-  setGameOver(valueEmitted: boolean){
-    this.gameover.emit(valueEmitted);
+  setGameOver(valueEmitted: integer){
+    this.gameover.emit(valueEmitted + this.score);
   }
 }
