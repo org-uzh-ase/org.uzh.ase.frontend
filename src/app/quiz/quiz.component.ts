@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { GameService } from '../game.service';
 import {Quiz} from '../model/quiz';
 
@@ -9,6 +9,7 @@ import {Quiz} from '../model/quiz';
 })
 export class QuizComponent implements OnInit {
   quiz: Quiz;
+  @Output() clicked: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private gameService: GameService) { }
 
@@ -22,6 +23,11 @@ export class QuizComponent implements OnInit {
       quiz => {
         this.quiz = <Quiz> quiz;
       })
+  }
+
+  getEventFromOption(valueEmitted: boolean){
+    console.log("Quiz component: " + valueEmitted)
+    this.clicked.emit(valueEmitted);
   }
 
 }

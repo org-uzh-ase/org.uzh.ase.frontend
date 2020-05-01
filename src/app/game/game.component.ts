@@ -1,7 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Quiz } from '../model/quiz';
-import { Movie } from '../model/movie';
-import {GameService} from '../game.service';
 
 @Component({
   selector: 'app-game',
@@ -9,9 +6,18 @@ import {GameService} from '../game.service';
   styleUrls: ['./game.component.sass']
 })
 export class GameComponent implements OnInit {
+  score: integer;
 
   constructor() { }
 
   ngOnInit() {
+  this.score = 0;
+  }
+
+  getEventFromOption(valueEmitted:boolean){
+    console.log("Game component: " + valueEmitted)
+    if(valueEmitted){
+      this.score = this.score + 10;
+    }
   }
 }
