@@ -11,13 +11,14 @@ export class GameComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-  this.score = 0;
+    this.score = 0;
   }
 
   getEventFromOption(valueEmitted:boolean){
-    console.log("Game component: " + valueEmitted)
     if(valueEmitted){
       this.score = this.score + 10;
+    }else{
+      this.score = this.score - 5;
     }
   }
 }

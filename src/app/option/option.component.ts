@@ -24,11 +24,9 @@ export class OptionComponent implements OnInit, OnChanges {
 
   validate(){
     if(this.correctAnswer == this.movie.code){
-      console.log("Option component: true")
       this.style = "wrapper correct";
       this.clicked.emit(true);
     }else{
-      console.log("Option component: false")
       this.style = "wrapper wrong";
       this.clicked.emit(false);
     }    
