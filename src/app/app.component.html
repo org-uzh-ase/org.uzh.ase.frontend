@@ -20,7 +20,7 @@
     <app-game (gameover) = "setGameOver($event)"></app-game>
   </div>
   <div class="gameover" *ngIf="gameover">
-    <h1>You lost you fucking looser :D</h1>
+    <h1>You lost you fucking looser :D Your total score is {{totalScore}}</h1>
   </div>
 <router-outlet></router-outlet>
 </body>

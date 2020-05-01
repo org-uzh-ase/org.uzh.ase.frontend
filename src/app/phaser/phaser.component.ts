@@ -13,7 +13,7 @@ import {Bullet} from './Bullet';
 export class PhaserComponent implements OnInit {
   phaserGame: Phaser.Game;
   config: Phaser.Types.Core.GameConfig;
-  @Output() gameOver: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() gameOver: EventEmitter<integer> = new EventEmitter<integer>();
 
   constructor() {
     this.config = CONFIG;
@@ -25,8 +25,8 @@ export class PhaserComponent implements OnInit {
     window["angularLink"] = this;
   }
 
-  setGameOver(){
-    this.gameOver.emit(true);
+  setGameOver(score: integer){
+    this.gameOver.emit(score);
   }
 
 }
@@ -413,7 +413,7 @@ handleGameOver( didPlayerWin ) {
 setGameOver(){
   var comp: PhaserComponent;
   comp = window['angularLink'] as PhaserComponent;
-  comp.setGameOver();
+  comp.setGameOver(this.score);
 }
 
 update(time) {
