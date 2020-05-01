@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-space',
@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SpaceComponent implements OnInit {
 
+  @Output() gameOver: EventEmitter<boolean> = new EventEmitter<boolean>();
+  
   constructor() { }
 
   ngOnInit() {
   }
 
+  setGameOver(valueEmitted: boolean){
+    this.gameOver.emit(valueEmitted);
+  }
 }

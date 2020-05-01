@@ -4,7 +4,7 @@
         <app-quiz (clicked)="getEventFromOption($event)"></app-quiz>
     </div>
     <div class="space">
-        <app-space></app-space>
+        <app-space (gameOver)="setGameOver($event)"></app-space>
     </div>
 </div>
 
