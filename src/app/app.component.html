@@ -7,38 +7,42 @@
 </head>
 <body>
   <div class="title">
-    <img src="../assets/Popcorn_laura.gif" alt="popcorn">
-    <h1>The Very Stressful Movie Quiz</h1>
-    <img src="../assets/Popcorn_laura.gif" alt="popcorn">
+    <img class="popcorn" src="../assets/Popcorn_laura.gif" alt="popcorn">
+    <img class="stressfulmoviequiz" src="{{titlesrc}}" alt="The Very Stressful Movie Quiz">
+    <img class="popcorn" src="../assets/Popcorn_laura.gif" alt="popcorn">
   </div>
 
   <div class="starting" *ngIf="welcome">
     <h1>Welcome to the Very Stressful Movie Quiz!</h1>
-
-    <div class="instructions">
-      <div>
-        <img src='../assets/quiz.JPG' alt="Quiz">
-      </div>
-      <div class="text">
-        Read the description on the bottom and match it to the correct movie title. <br>
-        Each correctly guessed Movie grants you +10 Points. Guess wrong and 5 points are reducted.<br>
-        Your Total Score for the Quiz part is shown on the upper left corner.<br>
-      </div>
+    
+    <div class="leaderboard">
+      <h2>Leaderbord</h2>
+      <app-leaderboard></app-leaderboard>
     </div>
-
+<div class="quizdescription">
+  Ever got bored during regular quizzes? Boy do I have a game for you! 
+</div>
+    <h2>Instructions</h2>
     <div class="instructions"> 
       <div>
-        <img src='../assets/shooting_game.JPG' alt="Space Game">
+        <img src='../assets/Tasten.png' alt="Space Game">
       </div>
-      <div class="text">
-        Steer your Space Ship to the left using 'A' on your keyboard and go to the right using 'D'. Shoot bullets with the spacebar.<br>
+      <div class="quizdescription">
+        Read the description on the bottom left and match it to the correct movie title. <br>
+        <br>
+        Each correctly guessed Movie grants you +10 Points. Guess wrong and 5 points are subtracted.<br>
+        <br>
+        But a movie quiz is too relaxing. This is why you are trying to defend Earth from an Alien Invasion at the same time. <br>
+        <br>
         You start with a total of 3 lives. For each hit you take from the enemy bullets, one live will be taken away. If you have no more lives the game is over.<br>
+        <br>
         For each enemy you shoot you'll receive +20 points and an additional 1000 points if all enemies were killed.<br>
-        Your Total Score for the Space Game part is shown on the upper left corner and your current number of lives on the upper right corner.<br>
       </div>
     </div>
 
-    <button (click)="startGame()">Start the game!</button>
+    <button class="startbutton" (click)="startGame()">Start the game!</button>
+
+
   </div>
 
   <div class="game" *ngIf="startedGame">
