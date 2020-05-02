@@ -40,8 +40,6 @@ export var titles =
 "https://fontmeme.com/permalink/200502/d5a4b59d652482242996e0d4cece7d7d.png",
 "https://fontmeme.com/permalink/200502/3641c1af46d1215a823278b366c28fc3.png",
 "https://fontmeme.com/permalink/200502/60316d1e125cc7a68459989fadcec0a7.png",
-"https://fontmeme.com/permalink/200502/1b2e68f403b24adf6ba01dbfe9620afd.png",
-"https://fontmeme.com/permalink/200502/1b2e68f403b24adf6ba01dbfe9620afd.png",
 "https://fontmeme.com/permalink/200502/af8abeabf1d9740c4dc466a29ab666bb.png",
 "https://fontmeme.com/permalink/200502/c1b4689d5a203532e8c91e70574aa239.png",
 "https://fontmeme.com/permalink/200502/ac898a46eb9e0781db38bd2cccd34d5c.png",
@@ -50,5 +48,6 @@ export var titles =
 "https://fontmeme.com/permalink/200502/2ca5220b6be7929fd523c3d91e9648c5.png",
 "https://fontmeme.com/permalink/200502/2ca5220b6be7929fd523c3d91e9648c5.png",
 "https://fontmeme.com/permalink/200502/ddf911905cdf2a2d890244a5cdd2ef9b.png",
-"https://fontmeme.com/permalink/200502/0110e662d342513460c0b27db029f92d.png"
+"https://fontmeme.com/permalink/200502/0110e662d342513460c0b27db029f92d.png",
+"https://fontmeme.com/permalink/200502/0c2cf8e9e6f360c42c12b15622c95657.png"
 ]

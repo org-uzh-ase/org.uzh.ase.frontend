@@ -14,11 +14,6 @@
 
   <div class="starting" *ngIf="welcome">
     <h1>Welcome to the Very Stressful Movie Quiz!</h1>
-    
-    <div class="leaderboard">
-      <h2>Leaderbord</h2>
-      <app-leaderboard></app-leaderboard>
-    </div>
 <div class="quizdescription">
   Ever got bored during regular quizzes? Boy do I have a game for you! 
 </div>
@@ -28,25 +23,44 @@
         <img src='../assets/Tasten.png' alt="Space Game">
       </div>
       <div class="quizdescription">
-        Read the description on the bottom left and match it to the correct movie title. <br>
+        Read the description on the bottom left and match it to the correct movie title.<br>
         <br>
-        Each correctly guessed Movie grants you +10 Points. Guess wrong and 5 points are subtracted.<br>
+        You get 20 seconds to play the quiz. Each correctly guessed movie grants you another +5 seconds.<br>
         <br>
         But a movie quiz is too relaxing. This is why you are trying to defend Earth from an Alien Invasion at the same time. <br>
         <br>
-        You start with a total of 3 lives. For each hit you take from the enemy bullets, one live will be taken away. If you have no more lives the game is over.<br>
-        <br>
         For each enemy you shoot you'll receive +20 points and an additional 1000 points if all enemies were killed.<br>
+        <br>
+        You start with a total of 3 lives. For each hit you take from the enemy bullets, one live will be taken away. <br>
+        <br>
+        The game is finished if there are no more aliens left, if you lost all your lives or if the time runs out.<br>
+        <br>
+        
       </div>
     </div>
 
-    <button class="startbutton" (click)="startGame()">Start the game!</button>
+    <div class="startgame">
+      <button class="startbutton" (click)="startGame()">Start the game!</button>
+      
+      <mat-form-field>
+        <mat-label>Level</mat-label>
+        <mat-select [(value)]="level">
+          <mat-option *ngFor="let lvl of levels" [value]="lvl.value" required>
+            {{ lvl.viewValue }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
 
-
+    
+    <div class="leaderboard">
+      <h2>Leaderbord</h2>
+      <app-leaderboard></app-leaderboard>
+    </div>
   </div>
 
   <div class="game" *ngIf="startedGame">
-    <app-game (gameover) = "setGameOver($event)"></app-game>
+    <app-game [level]="level" (gameover) = "setGameOver($event)"></app-game>
   </div>
   <div class="gameover" *ngIf="gameover">
     <h1>Your Total Score is {{totalScore}}</h1>
@@ -55,7 +69,22 @@
       <button (click)="restartGame()">Try again</button>
       <button (click)="backToStart()">Back to Instructions</button>  
     </div>
+
+    <form #leaderForm="ngForm" (ngSubmit)="onSubmit()" *ngIf="!submitted">
+      <div class="form-group">
+        <label for="name">Username</label>
+        <input type="text" class="form-control" id="name" required [(ngModel)]="score.user" name="name">
+      </div>
+
+      <button class="button" type="submit">Submit your Score</button>
+    </form>
+
+    <div class="leaderboard">
+      <h2>Leaderbord</h2>
+      <app-leaderboard></app-leaderboard>
+    </div>
   </div>
+  
 <router-outlet></router-outlet>
 </body>
 </html>

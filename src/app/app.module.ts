@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule }   from '@angular/forms';
 import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -11,11 +12,13 @@ import { QuestionComponent } from './question/question.component';
 import { GameComponent } from './game/game.component';
 import { OptionComponent } from './option/option.component';
 import { GameService } from './services/game.service';
-import {UserService} from './services/user.service';
+import { UserService} from './services/user.service';
 import { PhaserComponent } from './phaser/phaser.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -34,7 +37,10 @@ import { LeaderboardComponent } from './leaderboard/leaderboard.component';
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatProgressBarModule
+    FormsModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [GameService, UserService],
   bootstrap: [AppComponent]

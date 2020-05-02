@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import * as Phaser from "phaser";
 import {CONFIG} from './CONFIG';
 import {Bullet} from './Bullet';
+import { getSyntheticPropertyName } from '@angular/compiler/src/render3/util';
 
 
 @Component({
@@ -13,6 +14,7 @@ import {Bullet} from './Bullet';
 export class PhaserComponent implements OnInit {
   phaserGame: Phaser.Game;
   config: Phaser.Types.Core.GameConfig;
+  score: integer;
   @Output() gameOver: EventEmitter<integer> = new EventEmitter<integer>();
 
   constructor() {
@@ -28,6 +30,11 @@ export class PhaserComponent implements OnInit {
   setGameOver(score: integer){
     this.gameOver.emit(score);
     this.phaserGame.destroy(true, false);
+  }
+
+  stopGame(){
+    this.score = this.phaserGame.scene.scenes[0].score;
+    this.setGameOver(this.score);
   }
 
 }

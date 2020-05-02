@@ -1,6 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {titles} from '../assets/title_different_fonts';
 import {interval} from 'rxjs';
+import { UserService } from './services/user.service';
+import { LeaderboardComponent } from './leaderboard/leaderboard.component';
+import { Score } from './model/score';
+
+export interface Level {
+  value: number;
+  viewValue: string;
+}
 
 @Component({
   selector: 'app-root',
@@ -17,6 +25,21 @@ export class AppComponent implements OnInit{
   titles: string[];
   counter = 0;
   timer;
+  leaderForm;
+  submitted = false;
+  score = new Score('', 0);
+  level = 1;
+
+  levels: Level[] = [
+    {value: 1, viewValue: 'Easy'},
+    {value: 2, viewValue: 'Medium'},
+    {value: 3, viewValue: 'Hard'}
+  ]
+
+  @ViewChild(LeaderboardComponent) childComp: LeaderboardComponent;
+
+  constructor(private userService: UserService){
+  }
 
   ngOnInit(){
     this.titles = titles;
@@ -49,5 +72,12 @@ export class AppComponent implements OnInit{
   backToStart(){
     this.welcome = true;
     this.gameover = false;  
+  }
+
+  onSubmit(){
+    this.score.scoreNo = this.totalScore;
+    this.userService.postScore(this.score);
+    this.childComp.getLeaders();
+    this.submitted = true;
   }
 }

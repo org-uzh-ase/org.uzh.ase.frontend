@@ -18,7 +18,6 @@ export class QuizComponent implements OnInit {
   }
 
   getQuiz(){
-
     this.gameService.getQuiz().subscribe(
       quiz => {
         this.quiz = <Quiz> quiz;

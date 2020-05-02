@@ -1,4 +1,6 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, Input } from '@angular/core';
+import {Observable, interval} from 'rxjs';
+import { SpaceComponent } from '../space/space.component';
 
 @Component({
   selector: 'app-game',
@@ -7,23 +9,42 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class GameComponent implements OnInit {
   score: integer;
+  timer: integer;
+  obs: Observable<number>;
+  @Input() level: integer;
   @Output() gameover: EventEmitter<integer> = new EventEmitter<integer>(); 
+  @ViewChild(SpaceComponent) childcomp: SpaceComponent;
 
   constructor() { }
 
   ngOnInit() {
-    this.score = 0;
+    this.timer = 100;
+    this.obs = interval(50);
+    this.obs.subscribe(() => this.setTime())
+  }
+
+  setTime(){
+    this.timer = this.timer - 0.25;
+    if(this.timer < 0){
+      this.stopGame();
+    }
+  }
+
+  addTime(delta: integer){
+    this.timer = Math.min(100, this.timer + delta);
   }
 
   getEventFromOption(valueEmitted:boolean){
     if(valueEmitted){
-      this.score = this.score + 10;
-    }else{
-      this.score = this.score - 5;
+      this.addTime(25/this.level);
     }
   }
 
   setGameOver(valueEmitted: integer){
-    this.gameover.emit(valueEmitted + this.score);
+    this.gameover.emit(valueEmitted);
+  }
+
+  stopGame(){
+    this.childcomp.stopGame();
   }
 }
