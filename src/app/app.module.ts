@@ -10,10 +10,12 @@ import { AnswerComponent } from './answer/answer.component';
 import { QuestionComponent } from './question/question.component';
 import { GameComponent } from './game/game.component';
 import { OptionComponent } from './option/option.component';
-import { GameService } from './game.service';
+import { GameService } from './services/game.service';
+import {UserService} from './services/user.service';
 import { PhaserComponent } from './phaser/phaser.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { LeaderboardComponent } from './leaderboard/leaderboard.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,8 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     QuestionComponent,
     GameComponent,
     OptionComponent,
-    PhaserComponent
+    PhaserComponent,
+    LeaderboardComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +36,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     BrowserAnimationsModule,
     MatProgressBarModule
   ],
-  providers: [GameService],
+  providers: [GameService, UserService],
   bootstrap: [AppComponent]
   
 })
