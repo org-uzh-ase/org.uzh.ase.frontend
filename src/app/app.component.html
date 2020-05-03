@@ -25,7 +25,7 @@
       <div class="quizdescription">
         Read the description on the bottom left and match it to the correct movie title.<br>
         <br>
-        You get 20 seconds to play the quiz. Each correctly guessed movie grants you another +5 seconds.<br>
+        You get 20 seconds to play the quiz. Each correctly guessed movie grants you another few seconds. The harder the chosen level the less additional time.<br>
         <br>
         But a movie quiz is too relaxing. This is why you are trying to defend Earth from an Alien Invasion at the same time. <br>
         <br>
@@ -35,23 +35,19 @@
         <br>
         The game is finished if there are no more aliens left, if you lost all your lives or if the time runs out.<br>
         <br>
-        
       </div>
     </div>
 
     <div class="startgame">
       <button class="startbutton" (click)="startGame()">Start the game!</button>
       
-      <mat-form-field>
-        <mat-label>Level</mat-label>
-        <mat-select [(value)]="level">
-          <mat-option *ngFor="let lvl of levels" [value]="lvl.value" required>
-            {{ lvl.viewValue }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+      <form class="leveldifficulty">
+        <label>Level:</label>
+        <select [(value)]="level" (change)="selected()">
+          <option *ngFor="let lvl of levels" [value]="lvl.value">{{lvl.viewValue}}</option>
+        </select>
+      </form>
     </div>
-
     
     <div class="leaderboard">
       <app-leaderboard></app-leaderboard>
@@ -69,7 +65,7 @@
       <button (click)="backToStart()">Back to Instructions</button>  
     </div>
 
-    <form #leaderForm="ngForm" (ngSubmit)="onSubmit()" *ngIf="!submitted">
+    <form class="submitLeader" #leaderForm="ngForm" (ngSubmit)="onSubmit()" *ngIf="!submitted">
       <div class="form-group">
         <label for="name">Username</label>
         <input type="text" class="form-control" id="name" required [(ngModel)]="score.user" name="name">

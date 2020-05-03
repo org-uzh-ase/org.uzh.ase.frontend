@@ -16,9 +16,6 @@ import { UserService} from './services/user.service';
 import { PhaserComponent } from './phaser/phaser.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LeaderboardComponent } from './leaderboard/leaderboard.component';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -37,10 +34,7 @@ import { MatInputModule } from '@angular/material/input';
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    FormsModule,
-    MatSelectModule,
-    MatFormFieldModule,
-    MatInputModule
+    FormsModule
   ],
   providers: [GameService, UserService],
   bootstrap: [AppComponent]
