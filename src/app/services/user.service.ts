@@ -13,8 +13,6 @@ export class UserService {
   }
 
   postScore(score: Score){
-    this.http.post<Score>(this.BASE_URL + "/api/scores/score", score, {observe: 'response'}).subscribe(resp => {
-      console.log(resp);
-   });
+    this.http.post<Score>(this.BASE_URL + "/api/scores/score", score);
   }
 }
