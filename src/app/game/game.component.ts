@@ -9,6 +9,7 @@ import { SpaceComponent } from '../space/space.component';
 })
 export class GameComponent implements OnInit {
   score: integer;
+  correctAnswer: integer;
   timer: integer;
   obs: Observable<number>;
   @Input() level: integer;
@@ -18,6 +19,8 @@ export class GameComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.score = 0;
+    this.correctAnswer = 1;
     this.timer = 100;
     this.obs = interval(50);
     this.obs.subscribe(() => this.setTime())
@@ -37,11 +40,16 @@ export class GameComponent implements OnInit {
   getEventFromOption(valueEmitted:boolean){
     if(valueEmitted){
       this.addTime(25/this.level);
+      this.correctAnswer += 1;
+      this.score = this.score + 10*this.correctAnswer;
+    }else{
+      this.score = this.score - 5;
+      this.correctAnswer = 1;
     }
   }
 
   setGameOver(valueEmitted: integer){
-    this.gameover.emit(valueEmitted);
+    this.gameover.emit(valueEmitted + this.score);
   }
 
   stopGame(){
