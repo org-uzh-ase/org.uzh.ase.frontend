@@ -1,5 +1,6 @@
 <div class="outer">
     <div class="quiz">
+        <h1>Score: {{score}}</h1>
         <div class="timerbar" style="--width: {{timer}}%"></div>
         <app-quiz [level] = "level" (clicked)="getEventFromOption($event)"></app-quiz>
     </div>
