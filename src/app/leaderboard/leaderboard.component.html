@@ -11,16 +11,16 @@
 <h2>Leaderboard</h2>
 
 <div class="leaderboard">
-    <table>
+    <table summary="Leaderboard">
         <tr>
-          <th></th>
-          <th>User</th>
-          <th>Score</th>
+          <th scope="col"></th>
+          <th scope="col">User</th>
+          <th scope="col">Score</th>
         </tr>
         <tr *ngFor="let leader of leaders; let i = index">
-            <td>{{i + 1}}</td>
-            <td>{{leader.user}}</td>
-            <td>{{leader.scoreNo}}</td>
+            <td scope="row">{{i + 1}}</td>
+            <td scope="row">{{leader.user}}</td>
+            <td scope="row">{{leader.scoreNo}}</td>
          </tr>
     </table>
 </div>
