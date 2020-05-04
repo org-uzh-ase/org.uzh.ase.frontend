@@ -31,14 +31,10 @@ export class LeaderboardComponent implements OnInit {
         this.leaderboardEmpty = this.leaders.length == 0;
       })
   }
-
-  postScore(score: Score){
-    this.userService.postScore(score);
-  }
   
   onSubmit(){
     this.score.scoreNo = this.totalScore;
-    this.userService.postScore(this.score);
+    this.userService.postScore(this.score).subscribe(() => this.getLeaders());
     this.submitted = true;
   }
 }
