@@ -20,13 +20,13 @@ export class AppComponent implements OnInit{
   welcome = true;
   startedGame = false;
   gameover = false;
+  visibleLeaderboard: boolean;
   totalScore = 0;
   titlesrc: string;
   titles: string[];
   counter = 0;
   timer;
   leaderForm;
-  submitted = false;
   score = new Score('', 0);
   level = 1;
 
@@ -46,6 +46,7 @@ export class AppComponent implements OnInit{
     this.setDifferentMovieTitle();
     this.timer = interval(10000);
     this.timer.subscribe(() => this.setDifferentMovieTitle());
+    this.visibleLeaderboard = this.childComp.leaders.length > 0
   }
 
   setDifferentMovieTitle(){
@@ -56,7 +57,6 @@ export class AppComponent implements OnInit{
   startGame(){
     this.startedGame = true
     this.welcome = false
-    console.log("Level in app component: " +this.level)
   }
 
   setGameOver(valueEmitted: integer){
@@ -78,7 +78,7 @@ export class AppComponent implements OnInit{
   onSubmit(){
     this.score.scoreNo = this.totalScore;
     this.userService.postScore(this.score);
-    this.submitted = true;
+    this.visibleLeaderboard = false;
     this.childComp.getLeaders();
   }
 
