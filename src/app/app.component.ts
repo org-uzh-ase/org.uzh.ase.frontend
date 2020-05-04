@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import {titles} from '../assets/title_different_fonts';
 import {interval} from 'rxjs';
 import { UserService } from './services/user.service';
@@ -27,7 +27,6 @@ export class AppComponent implements OnInit{
   counter = 0;
   timer;
   leaderForm;
-  score = new Score('', 0);
   level = 1;
 
   levels: Level[] = [
@@ -35,8 +34,6 @@ export class AppComponent implements OnInit{
     {value: 2, viewValue: 'Medium'},
     {value: 3, viewValue: 'Hard'}
   ]
-
-  @ViewChild(LeaderboardComponent) childComp: LeaderboardComponent;
 
   constructor(private userService: UserService){
   }
@@ -46,7 +43,7 @@ export class AppComponent implements OnInit{
     this.setDifferentMovieTitle();
     this.timer = interval(10000);
     this.timer.subscribe(() => this.setDifferentMovieTitle());
-    this.visibleLeaderboard = this.childComp.leaders.length > 0
+    this.visibleLeaderboard = false;
   }
 
   setDifferentMovieTitle(){
@@ -73,13 +70,6 @@ export class AppComponent implements OnInit{
   backToStart(){
     this.welcome = true;
     this.gameover = false;  
-  }
-
-  onSubmit(){
-    this.score.scoreNo = this.totalScore;
-    this.userService.postScore(this.score);
-    this.visibleLeaderboard = false;
-    this.childComp.getLeaders();
   }
 
   selected(){

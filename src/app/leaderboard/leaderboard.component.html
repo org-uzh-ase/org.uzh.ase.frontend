@@ -1,4 +1,13 @@
 <div class="wrapper" *ngIf="!leaderboardEmpty">
+  <form class="submitLeader" #leaderForm="ngForm" (ngSubmit)="onSubmit()" *ngIf="!submitted && gameover">
+    <div class="form-group">
+      <label for="name">Username: </label>
+      <input type="text" class="form-control" id="name" required [(ngModel)]="score.user" name="name">
+    </div>
+
+    <button class="button" type="submit">Submit your Score</button>
+  </form>
+
 <h2>Leaderboard</h2>
 
 <div class="leaderboard">

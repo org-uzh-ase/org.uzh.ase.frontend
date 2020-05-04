@@ -9,12 +9,9 @@ export class GameService {
   constructor(private http: HttpClient) { }
 
   getQuiz(level: integer){
-    var tmp = this.http.get(this.BASE_URL + "/api/quizzes/quiz?level=" + level)
+    return this.http.get(this.BASE_URL + "/api/quizzes/quiz?level=" + level)
     .pipe(
       retry(3)
     );
-
-    console.log(tmp);
-    return tmp;
   }
 }

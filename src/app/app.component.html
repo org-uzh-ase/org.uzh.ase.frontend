@@ -52,7 +52,7 @@
     </div>
     
     <div class="leaderboard">
-      <app-leaderboard></app-leaderboard>
+      <app-leaderboard [totalScore]="totalScore" [gameover]="gameover"></app-leaderboard>
     </div>
   </div>
 
@@ -67,17 +67,8 @@
       <button (click)="backToStart()">Back to Instructions</button>  
     </div>
 
-    <form class="submitLeader" #leaderForm="ngForm" (ngSubmit)="onSubmit()" *ngIf="visibleLeaderboard">
-      <div class="form-group">
-        <label for="name">Username</label>
-        <input type="text" class="form-control" id="name" required [(ngModel)]="score.user" name="name">
-      </div>
-
-      <button class="button" type="submit">Submit your Score</button>
-    </form>
-
     <div class="leaderboard">
-      <app-leaderboard></app-leaderboard>
+      <app-leaderboard [totalScore]="totalScore" [gameover]="gameover"></app-leaderboard>
     </div>
   </div>
   
