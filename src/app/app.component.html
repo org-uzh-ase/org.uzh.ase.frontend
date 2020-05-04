@@ -67,7 +67,7 @@
       <button (click)="backToStart()">Back to Instructions</button>  
     </div>
 
-    <form class="submitLeader" #leaderForm="ngForm" (ngSubmit)="onSubmit()" *ngIf="!submitted">
+    <form class="submitLeader" #leaderForm="ngForm" (ngSubmit)="onSubmit()" *ngIf="visibleLeaderboard">
       <div class="form-group">
         <label for="name">Username</label>
         <input type="text" class="form-control" id="name" required [(ngModel)]="score.user" name="name">

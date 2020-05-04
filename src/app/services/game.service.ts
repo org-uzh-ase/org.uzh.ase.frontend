@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { retry, catchError } from 'rxjs/operators';
+import { retry } from 'rxjs/operators';
 
 @Injectable()
 export class GameService {
@@ -9,9 +9,12 @@ export class GameService {
   constructor(private http: HttpClient) { }
 
   getQuiz(level: integer){
-    return this.http.get(this.BASE_URL + "/api/quizzes/quiz?level=" + level)
+    var tmp = this.http.get(this.BASE_URL + "/api/quizzes/quiz?level=" + level)
     .pipe(
       retry(3)
     );
+
+    console.log(tmp);
+    return tmp;
   }
 }

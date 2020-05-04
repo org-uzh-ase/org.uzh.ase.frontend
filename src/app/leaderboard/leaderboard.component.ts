@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output } from '@angular/core';
 import {UserService} from '../services/user.service';
 import {Score} from '../model/score';
 
@@ -9,6 +9,7 @@ import {Score} from '../model/score';
 })
 export class LeaderboardComponent implements OnInit {
   leaders: Score[];
+  leaderboardEmpty: boolean;
 
   constructor(private userService: UserService) { }
 
@@ -20,11 +21,12 @@ export class LeaderboardComponent implements OnInit {
     this.userService.getScores().subscribe(
       scores => {
         this.leaders = scores as Score[];
+        console.log(this.leaders);
+        this.leaderboardEmpty = this.leaders.length == 0;
       })
   }
 
   postScore(score: Score){
     this.userService.postScore(score);
   }
-
 }
