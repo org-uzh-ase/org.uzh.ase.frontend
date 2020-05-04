@@ -1,9 +1,7 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import {titles} from '../assets/title_different_fonts';
 import {interval} from 'rxjs';
 import { UserService } from './services/user.service';
-import { LeaderboardComponent } from './leaderboard/leaderboard.component';
-import { Score } from './model/score';
 
 export interface Level {
   value: number;

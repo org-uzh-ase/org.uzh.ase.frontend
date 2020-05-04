@@ -2,7 +2,6 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import * as Phaser from "phaser";
 import {CONFIG} from './CONFIG';
 import {Bullet} from './Bullet';
-import { getSyntheticPropertyName } from '@angular/compiler/src/render3/util';
 
 
 @Component({
