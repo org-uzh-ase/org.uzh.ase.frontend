@@ -56,6 +56,19 @@ export class AppComponent implements OnInit{
   ngOnInit(){
     this.titles = titles;
     this.setDifferentMovieTitle();
+    this.timer = interval(10000);
+    this.timer.subscribe(() => this.setDifferentMovieTitle());
+    this.visibleLeaderboard = false;
+  }
+
+  setDifferentMovieTitle(){
+    this.titlesrc = this.titles[this.counter];
+    this.counter = (this.counter+1)%this.titles.length;
+  }
+
+  ngOnInit(){
+    this.titles = titles;
+    this.setDifferentMovieTitle();
     this.observ = interval(10000);
     this.observ.subscribe(() => this.setDifferentMovieTitle());
   }

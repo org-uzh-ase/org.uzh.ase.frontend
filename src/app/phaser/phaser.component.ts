@@ -41,7 +41,6 @@ export class PhaserComponent implements OnInit {
     this.score = this.phaserGame.scene.scenes[0].score;
     this.setGameOver(this.score);
   }
-
 }
 /**The setup for the shooting game. For more information see https://phaser.io/phaser3*/
 class SpaceScene extends Phaser.Scene{
