@@ -7,42 +7,57 @@
 </head>
 <body>
   <div class="title">
-    <img src="../assets/Popcorn_laura.gif" alt="popcorn">
-    <h1>The Very Stressful Movie Quiz</h1>
-    <img src="../assets/Popcorn_laura.gif" alt="popcorn">
+    <img class="popcorn" src="../assets/Popcorn_laura.gif" alt="popcorn">
+    <img class="stressfulmoviequiz" src="{{titlesrc}}" alt="The Very Stressful Movie Quiz">
+    <img class="popcorn" src="../assets/Popcorn_laura.gif" alt="popcorn">
   </div>
 
   <div class="starting" *ngIf="welcome">
     <h1>Welcome to the Very Stressful Movie Quiz!</h1>
-
-    <div class="instructions">
-      <div>
-        <img src='../assets/quiz.JPG' alt="Quiz">
-      </div>
-      <div class="text">
-        Read the description on the bottom and match it to the correct movie title. <br>
-        Each correctly guessed Movie grants you +10 Points. Guess wrong and 5 points are reducted.<br>
-        Your Total Score for the Quiz part is shown on the upper left corner.<br>
-      </div>
-    </div>
-
+<div class="quizdescription">
+  Ever got bored during regular quizzes? Boy do I have a game for you! 
+</div>
+    <h2>Instructions</h2>
     <div class="instructions"> 
       <div>
-        <img src='../assets/shooting_game.JPG' alt="Space Game">
+        <img src='../assets/Tasten.png' alt="Space Game">
       </div>
-      <div class="text">
-        Steer your Space Ship to the left using 'A' on your keyboard and go to the right using 'D'. Shoot bullets with the spacebar.<br>
-        You start with a total of 3 lives. For each hit you take from the enemy bullets, one live will be taken away. If you have no more lives the game is over.<br>
+      <div class="quizdescription">
+        Read the description on the bottom left and match it to the correct movie title.<br>
+        <br>
+        You get 20 seconds to play the quiz. Each correctly guessed movie grants you another few seconds. The harder the chosen level the less additional time.<br>
+        <br>
+        For each correct answer you'll get points and you are getting a bonus for guessing correctly consecutively. Guess wrong and 5 points are subtracted<br>
+        <br>
+        But a movie quiz is too relaxing. This is why you are trying to defend Earth from an Alien Invasion at the same time. <br>
+        <br>
         For each enemy you shoot you'll receive +20 points and an additional 1000 points if all enemies were killed.<br>
-        Your Total Score for the Space Game part is shown on the upper left corner and your current number of lives on the upper right corner.<br>
+        <br>
+        You start with a total of 3 lives. For each hit you take from the enemy bullets, one live will be taken away. <br>
+        <br>
+        The game is finished if there are no more aliens left, if you lost all your lives or if the time runs out.<br>
+        <br>
       </div>
     </div>
 
-    <button (click)="startGame()">Start the game!</button>
+    <div class="startgame">
+      <button class="startbutton" (click)="startGame()">Start the game!</button>
+      
+      <form class="leveldifficulty">
+        <label>Level:</label>
+        <select [(value)]="level" (change)="selected()">
+          <option *ngFor="let lvl of levels" [value]="lvl.value">{{lvl.viewValue}}</option>
+        </select>
+      </form>
+    </div>
+    
+    <div class="leaderboard">
+      <app-leaderboard [totalScore]="totalScore" [gameover]="gameover"></app-leaderboard>
+    </div>
   </div>
 
   <div class="game" *ngIf="startedGame">
-    <app-game (gameover) = "setGameOver($event)"></app-game>
+    <app-game [level]="level" (gameover) = "setGameOver($event)"></app-game>
   </div>
   <div class="gameover" *ngIf="gameover">
     <h1>Your Total Score is {{totalScore}}</h1>
@@ -51,8 +66,11 @@
       <button (click)="restartGame()">Try again</button>
       <button (click)="backToStart()">Back to Instructions</button>  
     </div>
+    <div class="leaderboard">
+      <app-leaderboard [totalScore]="totalScore" [gameover]="gameover"></app-leaderboard>
+    </div>
   </div>
-<router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 </body>
 </html>
 

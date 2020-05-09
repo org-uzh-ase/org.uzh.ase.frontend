@@ -1,7 +1,8 @@
 <div class="outer">
     <div class="quiz">
         <h1>Score: {{score}}</h1>
-        <app-quiz (clicked)="getEventFromOption($event)"></app-quiz>
+        <div class="timerbar" style="--width: {{timer}}%"></div>
+        <app-quiz [level] = "level" (clicked)="getEventFromOption($event)"></app-quiz>
     </div>
     <div class="space">
         <app-space (gameOver)="setGameOver($event)"></app-space>
