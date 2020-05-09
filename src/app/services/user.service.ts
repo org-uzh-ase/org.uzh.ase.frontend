@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Score } from '../model/score';
 
 @Injectable()
+/**Service responsible for making calls to the User Microservice. For more information see https://app.swaggerhub.com/apis/ltoedt/ASE/0.1*/
 export class UserService {
   BASE_URL = "http://localhost:8081"
 

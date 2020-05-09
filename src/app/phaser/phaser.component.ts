@@ -9,11 +9,15 @@ import {Bullet} from './Bullet';
   templateUrl: './phaser.component.html',
   styleUrls: ['./phaser.component.sass']
 })
-
+/**This componenet contains the actual shooting game.*/
 export class PhaserComponent implements OnInit {
+  /**The shooting game*/
   phaserGame: Phaser.Game;
+  /**Necessary configuration of the game.*/
   config: Phaser.Types.Core.GameConfig;
+  /**Score achieved by the player in the shooting game.*/
   score: integer;
+  /**Emits to the {@link SpaceComponent} when the player finished or lost the shooting game.*/
   @Output() gameOver: EventEmitter<integer> = new EventEmitter<integer>();
 
   constructor() {
@@ -26,18 +30,20 @@ export class PhaserComponent implements OnInit {
     window["angularLink"] = this;
   }
 
+  /**Remove the shooting game when the player finished or lost the game.*/
   setGameOver(score: integer){
     this.gameOver.emit(score);
     this.phaserGame.destroy(true, false);
   }
 
+  /**This method stops the shooting game. This method is triggered when time on the quiz part of the game ran out.*/
   stopGame(){
     this.score = this.phaserGame.scene.scenes[0].score;
     this.setGameOver(this.score);
   }
 
 }
-
+/**The setup for the shooting game. For more information see https://phaser.io/phaser3*/
 class SpaceScene extends Phaser.Scene{
   player;
   aliens;
