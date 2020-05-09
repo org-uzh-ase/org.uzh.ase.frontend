@@ -66,11 +66,13 @@
       <button (click)="restartGame()">Try again</button>
       <button (click)="backToStart()">Back to Instructions</button>  
     </div>
+
     <div class="leaderboard">
       <app-leaderboard [totalScore]="totalScore" [gameover]="gameover"></app-leaderboard>
     </div>
   </div>
-  <router-outlet></router-outlet>
+  
+<router-outlet></router-outlet>
 </body>
 </html>
 

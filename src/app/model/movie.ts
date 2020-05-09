@@ -1,3 +1,4 @@
+/**Representatin of the movie object which is part of the received {@link Quiz}.*/
 export class Movie{
    poster: string;
    title: string;

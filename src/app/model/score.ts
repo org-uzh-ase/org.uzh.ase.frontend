@@ -1,3 +1,4 @@
+/**Representation of the score object received and sent to the User Microservice.*/
 export class Score{
     user: string;
     scoreNo: integer;

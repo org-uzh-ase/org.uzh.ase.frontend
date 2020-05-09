@@ -6,10 +6,14 @@ import {Movie} from '../model/movie';
   templateUrl: './answer.component.html',
   styleUrls: ['./answer.component.sass']
 })
+/**Representation of the possible Answers to the Quiz Part */
 export class AnswerComponent implements OnInit, OnChanges {
 
+  /**Movies provided by the QuizComponent */
   @Input() movies: Movie[];
+  /**The code of the correct movie */
   @Input() correctAnswer: string;
+  /**Forwards to the {@link QuizComponent} if the clicked OptionComponent contained the correct answer or not*/
   @Output() clicked: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor() { }
@@ -22,10 +26,12 @@ export class AnswerComponent implements OnInit, OnChanges {
     this.shuffleMovies();
   }
 
+  /**In the received movie array ({@link AnswerComponent.movies}), the correct movie is always at position 1. This method shuffles the array in order to make the quiz more challenging.*/
   shuffleMovies(){
     this.shuffle(this.movies);
   }
 
+  /**Algorithm to shuffle the elements of an array.*/
   shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
   
@@ -45,6 +51,7 @@ export class AnswerComponent implements OnInit, OnChanges {
     return array;
   }
 
+  /**Receives the information if the clicked OptionComponent was the correct answer or not.*/
   getEventFromOption(valueEmitted: boolean){
     this.clicked.emit(valueEmitted);
   }

@@ -5,10 +5,14 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
   templateUrl: './question.component.html',
   styleUrls: ['./question.component.sass']
 })
+/**Representation of the Description of the movie we are looking for in the {@link AnswerComponent}.*/
 export class QuestionComponent implements OnInit, OnChanges {
 
+  /**Movie description provided by the {@link GameComponent}.*/
   @Input() description: string;
+  /**Description might be too long and thus is split up into two columns. This attribute contains part I.*/
   description1: string;
+  /**Description might be too long and thus is split up into two columns. This attribute contains part II.*/
   description2: string;
   
   constructor() { }
@@ -20,6 +24,7 @@ export class QuestionComponent implements OnInit, OnChanges {
     this.updateDescriptions()
   }
 
+  /**This method splits up the description into two parts if it's too long.*/
   updateDescriptions(){
     var wordlist = this.description.split(" ");
     if(this.description.length > 450){
