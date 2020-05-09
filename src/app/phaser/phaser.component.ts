@@ -14,6 +14,7 @@ export class PhaserComponent implements OnInit {
   phaserGame: Phaser.Game;
   config: Phaser.Types.Core.GameConfig;
   score: integer;
+
   @Output() gameOver: EventEmitter<integer> = new EventEmitter<integer>();
 
   constructor() {

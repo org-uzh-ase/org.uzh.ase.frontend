@@ -1,5 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { GameService } from '../services/game.service';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { GameService } from '../game.service';
 import {Quiz} from '../model/quiz';
 
 @Component({
