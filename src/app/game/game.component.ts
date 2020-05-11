@@ -34,17 +34,6 @@ export class GameComponent implements OnInit {
     this.obs.subscribe(() => this.setTime())
   }
 
-  setTime(){
-    this.timer = this.timer - 0.25;
-    if(this.timer < 0){
-      this.stopGame();
-    }
-  }
-
-  addTime(delta: integer){
-    this.timer = Math.min(100, this.timer + delta);
-  }
-
   /**Method to update timebar to simulate time running out.*/
   setTime(){
     this.timer = this.timer - 0.25;

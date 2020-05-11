@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { GameService } from '../services/game.service';
+import { Quiz } from '../model/quiz';
 
 @Component({
   selector: 'app-quiz',
@@ -24,7 +25,12 @@ export class QuizComponent implements OnInit {
   /**Getting the quiz object from the Quiz Microservice.*/
   getQuiz(){
     var response;
-    
+
+    var loc = window.location.href;
+    var tmp = loc.split(":");
+    var url = tmp.slice(0,2).join(":");
+    this.gameService.url = url;
+
     this.gameService.getQuiz(this.level).subscribe(
       quiz => {
         response = <Quiz> quiz;
