@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { titles } from '../assets/title_different_fonts';
 import { interval } from 'rxjs';
-import { UserService } from './services/user.service';
 
 /**
  * Interface for the Dropdown list to choose the Level of Difficulty
@@ -50,20 +49,7 @@ export class AppComponent implements OnInit{
     {value: 3, viewValue: 'Hard'}
   ]
 
-  constructor(private userService: UserService){
-  }
-
-  ngOnInit(){
-    this.titles = titles;
-    this.setDifferentMovieTitle();
-    this.timer = interval(10000);
-    this.timer.subscribe(() => this.setDifferentMovieTitle());
-    this.visibleLeaderboard = false;
-  }
-
-  setDifferentMovieTitle(){
-    this.titlesrc = this.titles[this.counter];
-    this.counter = (this.counter+1)%this.titles.length;
+  constructor(){
   }
 
   ngOnInit(){

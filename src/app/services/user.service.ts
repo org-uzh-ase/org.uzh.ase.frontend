@@ -5,12 +5,12 @@ import { Score } from '../model/score';
 @Injectable()
 /**Service responsible for making calls to the User Microservice. For more information see https://app.swaggerhub.com/apis/ltoedt/ASE/0.1*/
 export class UserService {
-  BASE_URL = "http://localhost:8081"
+  url = ""
 
   constructor(private http: HttpClient) { }
 
   getScores(){
-    return this.http.get(this.BASE_URL + "/api/scores");
+    return this.http.get(this.url + ":8081" + "/api/scores");
   }
 
   postScore(scr: Score){
@@ -21,6 +21,6 @@ export class UserService {
       })
     };
 
-    return this.http.post(this.BASE_URL + "/api/scores/score", bodyString, httpOptions);
+    return this.http.post(this.url + ":8081" + "/api/scores/score", bodyString, httpOptions);
   }
 }

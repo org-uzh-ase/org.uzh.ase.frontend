@@ -32,6 +32,11 @@ export class LeaderboardComponent implements OnInit {
 
   /**Get Top 100 scores from the User Microservice.*/
   getLeaders(){
+    var loc = window.location.href;
+    var tmp = loc.split(":");
+    var url = tmp.slice(0,2).join(":");
+    this.userService.url = url;
+    
     this.userService.getScores().subscribe(
       scores => {
         this.leaders = scores as Score[];
