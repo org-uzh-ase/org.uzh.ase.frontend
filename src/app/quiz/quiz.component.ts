@@ -29,6 +29,9 @@ export class QuizComponent implements OnInit {
     var loc = window.location.href;
     var tmp = loc.split(":");
     var url = tmp.slice(0,2).join(":");
+    if(tmp.length == 2){
+      url = url.slice(0, -1); // remove trailing "/"; otherwise calls ".com/:8080/api"
+    }
     this.gameService.url = url;
 
     this.gameService.getQuiz(this.level).subscribe(
