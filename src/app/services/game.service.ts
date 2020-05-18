@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { retry } from 'rxjs/operators';
 
 @Injectable()
-/**Service responsible for making calls to the Quiz Microservice. For more information see https://app.swaggerhub.com/apis/ltoedt/ASE/0.1*/
+/**Service responsible for making calls to the Quiz Microservice. For more information see https://app.swaggerhub.com/apis-docs/ltoedt/ASE/0.1*/
 export class GameService {
   url = ""
 
