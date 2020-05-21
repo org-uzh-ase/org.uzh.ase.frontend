@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AACI,GADD,CACC,OAAO,CAAC;EACJ,KAAK,EAAE,IAAI;EACX,KAAK,EAAE,GAAG;CAAG;;AAHrB,AAKI,GALD,CAKC,MAAM,CAAC;EACH,KAAK,EAAE,IAAI;CAAG",
+    "sources": [
+        "answer.component.sass"
+    ],
+    "names": [],
+    "file": "answer.component.css"
+}

@@ -1,0 +1,18 @@
+<div class="wrapper">
+    <div class="wrapper2">
+        <div class="option">
+            <app-option (clicked)="getEventFromOption($event)" [movie]="movies[0]" [correctAnswer]="correctAnswer"></app-option>
+        </div>
+        <div class="option">
+            <app-option (clicked)="getEventFromOption($event)" [movie]="movies[1]" [correctAnswer]="correctAnswer"></app-option>
+        </div>
+    </div>
+    <div class="wrapper2">
+        <div class="option">
+            <app-option (clicked)="getEventFromOption($event)" [movie]="movies[2]" [correctAnswer]="correctAnswer"></app-option>
+        </div>
+        <div class="option">
+            <app-option (clicked)="getEventFromOption($event)" [movie]="movies[3]" [correctAnswer]="correctAnswer"></app-option>
+        </div>
+    </div>
+</div>

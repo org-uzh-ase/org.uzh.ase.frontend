@@ -1,0 +1,11 @@
+  <!-- For Phaser -->
+  <script>
+    if (global === undefined) {
+      var global = window;
+    }
+  </script>
+    <div id="phaser-game">
+      <app-phaser (gameOver)="setGameOver($event)"></app-phaser>
+    </div>
+
+

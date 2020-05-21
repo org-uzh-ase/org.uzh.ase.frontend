@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,GAAG,CAAC;EACA,KAAK,EAAE,GAAG;CAAG",
+    "sources": [
+        "option.component.sass"
+    ],
+    "names": [],
+    "file": "option.component.css"
+}

@@ -1,0 +1,28 @@
+<div class="wrapper">
+  <form class="submitLeader" #leaderForm="ngForm" (ngSubmit)="onSubmit()" *ngIf="!submitted && gameover">
+    <div class="form-group">
+      <label for="name">Username: </label>
+      <input type="text" class="form-control" id="name" required [(ngModel)]="score.user" name="name">
+    </div>
+
+    <button class="button" type="submit">Submit your Score</button>
+  </form>
+
+<h2>Leaderboard</h2>
+
+<div class="leaderboard">
+    <table>
+      <caption *ngIf="false">Leaderboard</caption>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">User</th>
+          <th scope="col">Score</th>
+        </tr>
+        <tr *ngFor="let leader of leaders; let i = index">
+            <td>{{i + 1}}</td>
+            <td>{{leader.user}}</td>
+            <td>{{leader.scoreNo}}</td>
+         </tr>
+    </table>
+</div>
+</div> 
